@@ -1,0 +1,87 @@
+consumes:
+  - application/json
+info:
+  description: A Shadowrun Dice Roller Bot for Discord
+  title: shadowrun-dice-roller-bot
+  version: 0.1.0
+produces:
+  - application/json
+schemes:
+  - http
+swagger: "2.0"
+
+paths:
+  /:
+    get:
+      operationId: returnPing
+      produces:
+        - text/plain
+      responses:
+        "200":
+          description: OK message.
+          schema:
+            type: string
+            enum:
+              - OK
+  /roll:
+    post:
+      operationId: postMessage
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: body
+          description: Message to post
+          required: true
+          schema:
+
+      responses:
+        "200":
+          description: Dice Roll Successful
+          schema:
+            $ref: "#/definitions/result"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/error"
+
+definitions:
+  roll:
+    type: object
+    properties:
+      dice:
+        type: integer
+        format: int32
+      limit:
+        type: integer
+        format: int32
+      explode:
+        type: boolean
+  result:
+    type: object
+    properties:
+      rolls:
+        type: array
+        items:
+          type: integer
+          format: int32
+      hits:
+        type: integer
+        format: int32
+      glitch:
+        type: boolean
+      criticalGlitch:
+        type: boolean
+      reachedLimit:
+        type: boolean
+  error:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
