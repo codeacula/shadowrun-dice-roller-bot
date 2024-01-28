@@ -1,20 +1,24 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿using DSharpPlus;
+using DSharpPlus.SlashCommands;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+namespace ShadowrunDiceRollerBot;
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    static async Task Main(string[] args)
+    {
+        var token = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
 
-app.UseAuthorization();
-app.MapControllers();
-app.Run();
+        var discord = new DiscordClient(new DiscordConfiguration() {
+            Token = token,
+            TokenType = TokenType.Bot,
+            Intents = DiscordIntents.AllUnprivileged | DiscordIntents.MessageContents
+        });
+
+        var slash = discord.UseSlashCommands();
+        slash.RegisterCommands<SlashCommands>();
+        
+        await discord.ConnectAsync();
+        await Task.Delay(-1);
+    }
+}

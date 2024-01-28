@@ -1,4 +1,4 @@
-namespace ShadowrunDiceRollerBot.Models
+namespace ShadowrunDiceRollerBot
 {
     public class DiceRollParameters
     {

@@ -1,13 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using ShadowrunDiceRollerBot.Models;
+namespace ShadowrunDiceRollerBot;
 
-namespace ShadowrunDiceRollerBot.Controllers
+public class DiceRoller
 {
-    [ApiController]
-    [Route("dice")]
-    public class DiceController : ControllerBase
-    {
-        static readonly Random Rnd = new();
+            static readonly Random Rnd = new();
 
         static List<int> GetRolls(int amount)
         {
@@ -53,20 +48,4 @@ namespace ShadowrunDiceRollerBot.Controllers
 
             return diceResult;
         }
-
-        [HttpGet]
-        [Route("")]
-        public ActionResult<string> Index()
-        {
-            return Ok("ping");
-        }
-
-        [HttpPost]
-        [Route("roll")]
-        public ActionResult<DiceRollResult> Roll(DiceRollParameters parameters)
-        {
-            var result = RollDice(parameters);
-            return Ok(result);
-        }
-    }
 }
